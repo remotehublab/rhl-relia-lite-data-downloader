@@ -21,7 +21,6 @@ if __name__ == '__main__':
             print("Warning: failed to XInitThreads()")
 
 from PyQt5 import Qt
-from PyQt5.QtCore import QObject, pyqtSlot
 from gnuradio import qtgui
 from gnuradio.filter import firdes
 import sip
@@ -80,12 +79,12 @@ class cw_radar_pluto_var(gr.top_block, Qt.QWidget):
         self.samp_rate = samp_rate = 600000
         self.my_path = my_path = "/home/rhlab/Downloads/files/"
         self.freq_op = freq_op = 1600000000
-        self.fan_vel = fan_vel = 3
+        self.fan_vel = fan_vel = 1
         self.filename_tx = filename_tx = str(my_path)+"tx-freq-"+str(int(freq_op/1000000))+"-velocity-"+str(fan_vel)+"-bw-"+str(int(samp_rate/1000))
         self.filename_lpf_y = filename_lpf_y = str(my_path)+"rx-freq-"+str(int(freq_op/1000000))+"-velocity-"+str(fan_vel)+"-bw-"+str(int(samp_rate/1000))+"-lpf-y"
         self.filename_lpf_n = filename_lpf_n = str(my_path)+"rx-freq-"+str(int(freq_op/1000000))+"-velocity-"+str(fan_vel)+"-bw-"+str(int(samp_rate/1000))+"-lpf-n"
         self.dec = dec = 1024*4
-        self.addr = addr = "192.168.2.1"
+        self.addr = addr = "192.168.3.1"
 
         ##################################################
         # Blocks
@@ -200,22 +199,6 @@ class cw_radar_pluto_var(gr.top_block, Qt.QWidget):
         self.iio_pluto_sink_0.set_samplerate(samp_rate)
         self.iio_pluto_sink_0.set_attenuation(0, 0)
         self.iio_pluto_sink_0.set_filter_params('Auto', '', 0, 0)
-        # Create the options list
-        self._fan_vel_options = [1, 2, 3]
-        # Create the labels list
-        self._fan_vel_labels = ['Vel 1', 'Vel 2', 'Vel 3']
-        # Create the combo box
-        self._fan_vel_tool_bar = Qt.QToolBar(self)
-        self._fan_vel_tool_bar.addWidget(Qt.QLabel("velocity of fan" + ": "))
-        self._fan_vel_combo_box = Qt.QComboBox()
-        self._fan_vel_tool_bar.addWidget(self._fan_vel_combo_box)
-        for _label in self._fan_vel_labels: self._fan_vel_combo_box.addItem(_label)
-        self._fan_vel_callback = lambda i: Qt.QMetaObject.invokeMethod(self._fan_vel_combo_box, "setCurrentIndex", Qt.Q_ARG("int", self._fan_vel_options.index(i)))
-        self._fan_vel_callback(self.fan_vel)
-        self._fan_vel_combo_box.currentIndexChanged.connect(
-            lambda i: self.set_fan_vel(self._fan_vel_options[i]))
-        # Create the radio buttons
-        self.top_layout.addWidget(self._fan_vel_tool_bar)
         self.blocks_multiply_conjugate_cc_0 = blocks.multiply_conjugate_cc(1)
         self.blocks_file_sink_0_0_0 = blocks.file_sink(gr.sizeof_gr_complex*1, str(filename_tx), False)
         self.blocks_file_sink_0_0_0.set_unbuffered(False)
@@ -294,7 +277,6 @@ class cw_radar_pluto_var(gr.top_block, Qt.QWidget):
 
     def set_fan_vel(self, fan_vel):
         self.fan_vel = fan_vel
-        self._fan_vel_callback(self.fan_vel)
         self.set_filename_lpf_n(str(self.my_path)+"rx-freq-"+str(int(self.freq_op/1000000))+"-velocity-"+str(self.fan_vel)+"-bw-"+str(int(self.samp_rate/1000))+"-lpf-n")
         self.set_filename_lpf_y(str(self.my_path)+"rx-freq-"+str(int(self.freq_op/1000000))+"-velocity-"+str(self.fan_vel)+"-bw-"+str(int(self.samp_rate/1000))+"-lpf-y")
         self.set_filename_tx(str(self.my_path)+"tx-freq-"+str(int(self.freq_op/1000000))+"-velocity-"+str(self.fan_vel)+"-bw-"+str(int(self.samp_rate/1000)))

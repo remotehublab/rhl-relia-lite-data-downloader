@@ -28,7 +28,7 @@ options:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [8, 8.0]
+    coordinate: [8, 12.0]
     rotation: 0
     state: enabled
 
@@ -37,7 +37,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: '"192.168.2.1"'
+    value: '"192.168.3.1"'
   states:
     bus_sink: false
     bus_source: false
@@ -84,7 +84,19 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1296, 364.0]
+    coordinate: [1056, 116.0]
+    rotation: 0
+    state: disabled
+- name: fan_vel
+  id: variable
+  parameters:
+    comment: ''
+    value: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1024, 12.0]
     rotation: 0
     state: true
 - name: filename_lpf_n
